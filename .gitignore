@@ -93,7 +93,7 @@ doc/Doxygen/DTAGS
 processor[0-9]*
 
 # Ignore PyFoam information files
-PyFoam*
+/basicCase/PyFoam*
 
 # Ignore .log and .logfiles
 *.log
@@ -101,4 +101,8 @@ PyFoam*
 
 # Ignore .analyzed directories
 *.analyzed
+/basicCase/*.analyzed
 
+# Ignore constant big files
+/basicCase/constant/boundaryData
+/basicCase/constant/polyMesh
