@@ -1,0 +1,56 @@
+/*--------------------------------*- C++ -*---------------engine:jinja2-------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+simulationType      LES;
+
+LES{
+    {% if model=="dynamicSmagorinsky" %}
+        LESModel        dynamicSmagorinsky;
+        dynamicSmagorinskyCoeffs
+        {
+            filter        simple;
+            Ck              {{ck}}; 
+            Ce              {{ce}}; 
+        }
+    {% else %}
+        LESModel        Smagorinsky;
+        SmagorinskyCoeffs
+        {
+            Ck              {{ck}}; 
+            Ce              {{ce}}; 
+        }
+
+    {% endif %}
+    
+    delta           vanDriest;
+    vanDriestCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+        Aplus           26;
+        Cdelta          0.158;
+    }
+
+    printCoeffs     on;
+    turbulence      on;
+}
+
+
+// ************************************************************************* //
