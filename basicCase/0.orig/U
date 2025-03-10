@@ -1,4 +1,4 @@
-/*--------------------------------*- C++ -*------------------------------*\
+/*--------------------------------*- C++ -*-------engine:jinja2----------------------*\
 
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -17,7 +17,9 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (0 0 0);
+
+
+internalField nonuniform List<vector>
 
 
 boundaryField
@@ -49,6 +51,5 @@ boundaryField
 
 
 // ************************************************************************* //
-
 
 

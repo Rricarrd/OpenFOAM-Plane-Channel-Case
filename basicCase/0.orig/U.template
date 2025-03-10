@@ -18,22 +18,30 @@ FoamFile
 dimensions      [0 1 -1 0 0 0 0];
 
 {% if case=="spatial"%}
-internalField   uniform (0 0 0);
+    internalField   uniform (0 0 0);
 {% elif case=="temporal"%}
-
-internalField nonuniform List<vector>
+    #include "$FOAM_CASE/constant/fieldData/U"
 {% endif %}
 
 boundaryField
 {
-    inlet
-    {
-        type            timeVaryingMappedFixedValue;
-        mapMethod       nearest;
-        outOfBounds     clamp;
-        fileName        "$FOAM_CASE/constant/boundaryData"; // Directory containing data
-        value           uniform (0 0 0);
-    }
+    {% if case=="spatial"%}
+        inlet
+        {
+            type            timeVaryingMappedFixedValue;
+            mapMethod       nearest;
+            outOfBounds     clamp;
+            fileName        "$FOAM_CASE/constant/boundaryData"; // Directory containing data
+            value           uniform (0 0 0);
+        }
+    {% elif case=="temporal"%}
+        inlet
+        {
+            type            cyclic;
+        }
+    {% endif %}
+    
+    
     
     outlet
     {

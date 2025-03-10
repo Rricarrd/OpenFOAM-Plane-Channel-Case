@@ -1,7 +1,7 @@
 import numpy as np
 from scripts.velocity_inlet import time_evolution_inlet
-from scripts.files import write_points_file, write_velocity_file
-from scripts.utils import clear_directory
+from scripts.common.files import write_points_file, write_inlet_velocity_file
+from scripts.common.utils import clear_directory
 import os
 
 
@@ -78,7 +78,7 @@ def generate(dict, path):
     print("TS Waves inlet calculation... Done")
     print("Writing velocity files...")
     for i, t in enumerate(tVals):
-        write_velocity_file(u_time[:,:,i].flatten(), v_time[:,:,i].flatten(), w_time[:,:,i].flatten(), t, folder_path)
+        write_inlet_velocity_file(u_time[:,:,i].flatten(), v_time[:,:,i].flatten(), w_time[:,:,i].flatten(), t, folder_path)
     print("Writing velocity files... Done")
 
 
