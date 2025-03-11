@@ -82,15 +82,19 @@ doc/Doxygen/DTAGS
 /.dir-locals.el
 /.ycm*
 
-# Ignore the openfoam datafiles except for 0.orig
+# Ignore the openfoam datafiles except for 0.orig. Also other cloned cases
 [0-9]*
 !0.orig
+
 
 # Ignore the openfoam decimal datafiles
 *[0-9]*\.[0-9]*
 
 # Ignore the openfoam processor datafiles
 processor[0-9]*
+
+# Ignore cell center files
+/basicCase/constant/C*
 
 # Ignore PyFoam information files
 /basicCase/PyFoam*
