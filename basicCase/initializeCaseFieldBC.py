@@ -11,7 +11,8 @@ parent_path = pathlib.Path().resolve().parent # Get parent path
 sys.path.append(str(parent_path)) # Add to python path to access scripts folder
 
 # Now import the scripts folder
-from scripts import temporal_inlet_conditions, initial_field_conditions
+from scripts.field import generate_initial_field
+from scripts.inlet import generate_initial_inlet
 from scripts.common import parsing
 
 # Parse CLI commands
@@ -36,11 +37,11 @@ cell_centres=Ofpp.parse_internal_field('0/C')
 # Generating the corresponding initial conditions
 if args.type == "spatial":
     # Generate time varying inlet for spatial changing simulation
-    temporal_inlet_conditions.generate(parsed_data,current_path,cell_centres) 
+    generate_initial_inlet.generate(parsed_data,current_path,cell_centres) 
 
 elif args.type == "temporal":
     # Generate spatailly varying field for the time changing simulation
-    initial_field_conditions.generate(parsed_data,current_path,cell_centres)
+    generate_initial_field.generate(parsed_data,current_path,cell_centres)
 
 else:
     print("Incorrect type initialization. Choose either inletBC or initialField")

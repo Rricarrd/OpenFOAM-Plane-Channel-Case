@@ -31,26 +31,5 @@ def write_points_file(yp,zp,folder_path):
         f.write(')\n')
 
 
-def write_inlet_velocity_file(u, v, w, t, folder_path):
-    data = np.column_stack((u, v, w))
-    file_path_t = os.path.join(folder_path, f"{t:.3f}")
-    file_path_u = os.path.join(file_path_t, "U")
-    print(file_path_u)
-    os.mkdir(file_path_t)
-    with open(file_path_u, 'w') as f:
-        f.write('(\n')
-        for row in data:
-            f.write(f"({row[0]} {row[1]} {row[2]})\n")
-        f.write(')\n')
 
-def write_field_velocity_file(u, v, w, t, folder_path):
-    data = np.column_stack((u, v, w))
-    file_path_t = os.path.join(folder_path, f"{t:.3f}")
-    file_path_u = os.path.join(file_path_t, "U")
-    print(file_path_u)
-    os.mkdir(file_path_t)
-    with open(file_path_u, 'w') as f:
-        f.write('(\n')
-        for row in data:
-            f.write(f"({row[0]} {row[1]} {row[2]})\n")
-        f.write(')\n')
+

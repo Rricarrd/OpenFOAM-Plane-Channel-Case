@@ -1,5 +1,5 @@
 // Simulation parameters
-case temporal;
+case spatial;
 solver pisoFoam;
 numberOfProcessors 16;
 tStart 0;

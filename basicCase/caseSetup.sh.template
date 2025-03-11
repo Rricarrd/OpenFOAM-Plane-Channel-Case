@@ -7,12 +7,13 @@ echo "Setting $case field and boundary conditions."
 	# Generate time varying inlet K-waves for the whole simulation
 	python initializeCaseFieldBC.py temporal default
 	
-	# Set initial field to a parabolic profile using funkySetFields
-	funkySetFields -time 0
 	
 {% elif case=="spatial" %} 
 	# Generate initial spatial K-waves for the whole simulation
 	python initializeCaseFieldBC.py spatial default
+	
+	# Set initial field to a parabolic profile using funkySetFields
+	funkySetFields -time 0
 	
 {% endif %} 
 
