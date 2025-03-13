@@ -1,4 +1,4 @@
-/*--------------------------------*- C++ -*----------------------------------*\
+/*--------------------------------*- C++ -*--------engine:jinja2--------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  v2406                                 |
@@ -20,11 +20,13 @@ internalField   uniform 0;
 
 boundaryField
 {
-    "(inlet|outlet)"
-    {
-        type            calculated;
-        value           uniform 1e-08;
-    }
+    
+        "(inlet|outlet)"
+        {
+            type            cyclic;
+        }
+    
+    
 
     "(bottom|top)"
     {

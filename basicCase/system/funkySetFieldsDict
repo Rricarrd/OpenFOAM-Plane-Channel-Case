@@ -20,7 +20,7 @@ expressions
     setPoiseuilleFlow
     {
         field U;
-        variables "Ucl=10;H=2;";
+        variables "Ucl=1;H=2;";
         name U_profile;   // Custom name for this operation
         type expression;
         expression "(4.0*Ucl/(H*H))*pos().y*(H - pos().y) * vector(1,0,0)";

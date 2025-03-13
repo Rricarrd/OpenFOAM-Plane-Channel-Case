@@ -77,7 +77,7 @@ def space_evolution_field(
         )
 
         # Total velocities
-        u_space[:, :, i] = u_hat #+ U_lam
+        u_space[:, :, i] = u_hat + U_lam
         v_space[:, :, i] = v_hat
         w_space[:, :, i] = w_hat
         U_space[:, :, i] = np.sqrt(
@@ -213,24 +213,27 @@ def velocity_section(
     """
 
     real_val = np.zeros((len(yp), len(zp)), dtype=float)
+    coords = np.zeros((len(yp), len(zp)), dtype=float)
 
-    for j, y in enumerate(yp):
+    for j, z in enumerate(zp):
         # 2D
         term_2d = A2d * (hat_u_r2d * np.exp(1j * (alp2d * x - ome2d * t)))
 
         # 3D positive
-        term_3dp = 0.5 * A3d * (hat_u_r3d_p * np.exp(1j * (beta * y + alp3d*x - ome3dp * t)))
+        term_3dp = 0.5 * A3d * (hat_u_r3d_p * np.exp(1j * (beta * z + alp3d*x - ome3dp * t)))
 
         # 3D negative
-        term_3dm = 0.5 * A3d * (hat_u_r3d_m * np.exp(1j * (beta * y + alp3d*x - ome3dm * t)))
+        term_3dm = 0.5 * A3d * (hat_u_r3d_m * np.exp(1j * (beta * z + alp3d*x - ome3dm * t)))
 
         # Sum up the complex terms
         complex_val = term_2d + term_3dp + term_3dm
 
         # Take the real part of the vector
-        real_val[j,:] = np.real(complex_val)
-
-
+        real_val[:,j] = np.real(complex_val)
+ 
+    # print(real_val)
+    # plt.contourf(zp, yp, real_val)
+    # plt.show()
     return real_val
 
 

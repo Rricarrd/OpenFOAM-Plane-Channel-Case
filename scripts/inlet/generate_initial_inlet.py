@@ -27,8 +27,8 @@ def generate(dict, path, cell_centres):
     speed_factor = 1
 
     # --- Parameters ---
-    N = dict["N"]
-    H = dict["H2"]
+    H = dict["H"]
+    L = dict["L"]
     W = dict["W"]
     yp = np.linspace(0, H, N - 1)
     zp = np.linspace(0, W, N - 1)

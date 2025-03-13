@@ -17,8 +17,8 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-
-    internalField   uniform (0 0 0);
+ 
+#include "$FOAM_CASE/constant/fieldData/0.000/U"
 
 
 boundaryField
@@ -26,21 +26,15 @@ boundaryField
     
         inlet
         {
-            type            timeVaryingMappedFixedValue;
-            mapMethod       nearest;
-            outOfBounds     clamp;
-            fileName        "$FOAM_CASE/constant/boundaryData"; // Directory containing data
-            value           uniform (0 0 0);
+            type            cyclic;
+        }
+        
+        outlet
+        {
+            type            cyclic;
         }
     
     
-    
-    
-    outlet
-    {
-        type            zeroGradient;
-    }
-
     "(bottom|top)"
     {
         type            noSlip;

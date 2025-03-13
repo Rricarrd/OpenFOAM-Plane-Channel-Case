@@ -1,10 +1,12 @@
 // Simulation parameters
-case spatial;
+case temporal;
 solver pisoFoam;
 numberOfProcessors 16;
 tStart 0;
-tEnd 10;
-dt 5e-3;
+tEnd 50;
+dt 1e-2;
+writeTime 1;
+Re_lam 5000;
 
 // Turbulence model
 model dynamicSmagorinsky;
@@ -12,7 +14,7 @@ ce 1.048;
 ck 0.0265463553;
 
 // Orr-Sommerfeld Initial conditions 
-Ucl 10;
+Ucl 1;
 alpha_2D 1.12;
 alpha_3D 1.12;
 beta_2D 0;
@@ -22,19 +24,16 @@ A_3D 0.1;
 n_2D 0;
 n_3D 2;
 Np 0;
-N 32;
-Reb 3333;
-dynVisc 2.5494595145829e-3;
+dynVisc 2e-4;
 rho 1;
 
 // Meshing
-H 1;
-H2 2;
-W 3;
-L 50;
-nx 200;
+H 2;
+W 2.9919930042;
+L 5.60998688141;
+nx 32;
 ny 32;
-nz 32;
+nz 33;
 resFactor 1.;
 graded true;
 

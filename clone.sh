@@ -15,8 +15,12 @@ count=$(find . -maxdepth 1 -type d -regex "./[0-9].*" | wc -l)
 path="./$count$name"
 
 echo "Basic case cloned in: $path"
-
-
 pyFoamCloneCase.py ./basicCase $path
 
+
+echo "Copying also case generation script"
+cp ./basicCase/initializeCaseFieldBC.py $path
+
+echo "Copying also 0.orig"
+cp -r ./basicCase/0.orig $path
 exit 0

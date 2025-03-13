@@ -19,8 +19,8 @@ dimensions      [0 1 -1 0 0 0 0];
 
 {% if case=="spatial"%}
     internalField   uniform (0 0 0);
-{% elif case=="temporal"%}
-    #include "$FOAM_CASE/constant/fieldData/U"
+{% elif case=="temporal"%} 
+#include "$FOAM_CASE/constant/fieldData/0.000/U"
 {% endif %}
 
 boundaryField
@@ -34,20 +34,23 @@ boundaryField
             fileName        "$FOAM_CASE/constant/boundaryData"; // Directory containing data
             value           uniform (0 0 0);
         }
+        
+        outlet
+        {
+            type            zeroGradient;
+        }
     {% elif case=="temporal"%}
         inlet
         {
             type            cyclic;
         }
+        
+        outlet
+        {
+            type            cyclic;
+        }
     {% endif %}
     
-    
-    
-    outlet
-    {
-        type            zeroGradient;
-    }
-
     "(bottom|top)"
     {
         type            noSlip;
