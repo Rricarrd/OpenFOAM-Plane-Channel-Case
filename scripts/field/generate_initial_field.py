@@ -19,7 +19,7 @@ def generate(dict, path, cell_centres):
     print("Clearing directory... Done")
 
     print("Generating parameter values from .parameters file...")
-    ny, yp, zp, U_lam, alp2d, alp3d, beta, A2d, A3d, Re_b, n3d, n2d, Np, t, xp = parameters(dict)
+    ny, yp, zp, U_lam, alp2d, alp3d, beta, A2d, A3d, Re_lam, n3d, n2d, Np, t, xp = parameters(dict)
 
 
     # Time evolution
@@ -34,7 +34,7 @@ def generate(dict, path, cell_centres):
         beta,
         A2d,
         A3d,
-        Re_b,
+        Re_lam,
         n3d,
         n2d,
         Np,
