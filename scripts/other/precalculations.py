@@ -3,22 +3,23 @@ import math
 # ----------------- CURRENT PARAMETERS -----------------
 # Fluid parameters
 rho = 1
-nu = 2.54e-3
+Re_lam = 5000
+nu = 1/Re_lam
 
 # Channel parameters
-H = 1         # Channel height (Characteristic length) [m]
-H2 = 2 * H    # Channel total height [m]
-W = math.pi   # Channel width [m]
-L = 60        # Channel length [m]
+H = 1                       # Channel height (Characteristic length) [m]
+H2 = 2 * H                  # Channel total height [m]
+W = 2*math.pi/2.1           # Channel width [m]
+L = 2*math.pi/1.12          # Channel length [m]
 
 # Cell counts
-nx = 300
-ny = 16
-nz = 35
+nx = 32
+ny = 32
+nz = 32
 
 # Size increase gradient
 Rx = 1 + 1e-12
-Ry = 10.7028
+Ry = 30
 Rz = 1 + 1e-12
 
 print("######################### MESH CALCULATIONS #######################\n")
@@ -29,7 +30,7 @@ print("############ Calculations of the desired mesh ############\n")
 # y with Re and y+
 print("# Imposing Re and U")
 yplus = 1
-U = 17.55
+U = 1
 print(f"Considering yplus is {yplus} and U is {U:.3f} m/s")
 
 # 1 - Reynolds number
@@ -96,6 +97,13 @@ mincell_yplus = mincell_dy * Ut / nu
 mincell_zplus = mincell_dz * Ut / nu
 print(f"The smallest cells (touching the wall) are xplus = {mincell_xplus:.3f}, "
       f"yplus = {mincell_yplus:.3f} and zplus = {mincell_zplus:.3f}")
+
+print("# Current plane channel mesh element sizing")
+maxcell_xplus = maxcell_dx * Ut / nu
+maxcell_yplus = maxcell_dy * Ut / nu
+maxcell_zplus = maxcell_dz * Ut / nu
+print(f"The smallest cells (touching the wall) are xplus = {maxcell_xplus:.3f}, "
+      f"yplus = {maxcell_yplus:.3f} and zplus = {maxcell_zplus:.3f}")
 
 # ----------------- TURBULENCE MODEL -----------------
 print("############ Calculations of the turbulence models ############")

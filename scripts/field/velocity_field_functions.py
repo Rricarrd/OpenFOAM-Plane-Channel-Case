@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scripts.common.orr_sommerfeld_solution import solve_os_equation
+from scipy.interpolate import interp1d
 
 ########################## MAIN FUNCTIONS: TIME INSTANT FIELD ##########################
 def space_evolution_field(
@@ -18,7 +19,8 @@ def space_evolution_field(
     n2d,
     Np,
     t,
-    xp
+    xp,
+    y_cell_centres
 ):
     # --- Calculate Orr-Sommerfeld solution ---
     (
@@ -44,12 +46,41 @@ def space_evolution_field(
         n2d,
         Np,
     )
+
+    print("Example of interpolated velocity field:")
+    print(f"u2d: {u2d}")
+
+    # --- Interpolate velocity field to the grid ---
+    u2d = interpolate_u(u2d,yp,y_cell_centres, kind='cubic')
+    v2d = interpolate_u(v2d,yp,y_cell_centres, kind='cubic')
+    w2d = interpolate_u(w2d,yp,y_cell_centres, kind='cubic')
+
+    u3dp = interpolate_u(u3dp,yp,y_cell_centres, kind='cubic')
+    v3dp = interpolate_u(v3dp,yp,y_cell_centres, kind='cubic')
+    w3dp = interpolate_u(w3dp,yp,y_cell_centres, kind='cubic')
+
+    u3dm = interpolate_u(u3dm,yp,y_cell_centres, kind='cubic')
+    v3dm = interpolate_u(v3dm,yp,y_cell_centres, kind='cubic')
+    w3dm = interpolate_u(w3dm,yp,y_cell_centres, kind='cubic')
+
+    
+    print(f"With interpolation u2d: {u2d}")
+
+
+    
+    
     
     # --- Space evolution ---
-    u_space = np.zeros((len(yp), len(zp), len(xp)))
-    v_space = np.zeros((len(yp), len(zp), len(xp)))
-    w_space = np.zeros((len(yp), len(zp), len(xp)))
-    U_space = np.zeros((len(yp), len(zp), len(xp)))
+    ny2 = int(len(yp)/2)
+    u1_space = np.zeros((len(zp), ny2, len(xp)))
+    v1_space = np.zeros((len(zp), ny2,  len(xp)))
+    w1_space = np.zeros((len(zp), ny2,  len(xp)))
+    U1_space = np.zeros((len(zp), ny2,  len(xp)))
+
+    u2_space = np.zeros((len(zp), ny2,  len(xp)))
+    v2_space = np.zeros((len(zp), ny2,  len(xp)))
+    w2_space = np.zeros((len(zp), ny2,  len(xp)))
+    U2_space = np.zeros((len(zp), ny2,  len(xp)))
 
     for i, x in enumerate(xp):
         u_hat, v_hat, w_hat = evaluate_velocity_field_slice(
@@ -77,29 +108,31 @@ def space_evolution_field(
         )
 
         # Total velocities
-        u_space[:, :, i] = u_hat + U_lam
-        v_space[:, :, i] = v_hat
-        w_space[:, :, i] = w_hat
-        U_space[:, :, i] = np.sqrt(
-            u_space[:, :, i] ** 2 + v_space[:, :, i] ** 2 + w_space[:, :, i] ** 2
+        u1_space[:, :, i] = u_hat[:,0:ny2] + U_lam[:,0:ny2]
+        v1_space[:, :, i] = v_hat[:,0:ny2]
+        w1_space[:, :, i] = w_hat[:,0:ny2]
+        U1_space[:, :, i] = np.sqrt(
+            u1_space[:, :, i] ** 2 + v1_space[:, :, i] ** 2 + w1_space[:, :, i] ** 2
         )
 
-        # fig, ax = plt.subplots()
-        # ax.set_xlabel("yp")
-        # ax.set_ylabel("zp")
-        # ax.set_title("3D Orr-Sommerfeld Velocity Profile")
-        # ax.grid(True)
-        # ax.contourf(zp, yp, np.transpose(u_space[:, :, i]), label="u")
-        # ax.legend()
-        # fig.show()
+        u2_space[:, :, i] = u_hat[:,ny2:ny2*2] + U_lam[:,ny2:ny2*2]
+        v2_space[:, :, i] = v_hat[:,ny2:ny2*2]
+        w2_space[:, :, i] = w_hat[:,ny2:ny2*2]
+        U2_space[:, :, i] = np.sqrt(
+            u2_space[:, :, i] ** 2 + v2_space[:, :, i] ** 2 + w2_space[:, :, i] ** 2
+        )
+
 
     # Total velocities
-    u = u_space
-    v = v_space
-    w = w_space
-    U = np.sqrt(u**2 + v**2 + w**2)
-    # U = np.transpose(np.reshape(U, (len(yp), len(zp))))
-    return u, v, w, U
+    u1 = u1_space
+    v1 = v1_space
+    w1 = w1_space
+    u2 = u2_space
+    v2 = v2_space
+    w2 = w2_space
+
+
+    return u1, v1, w1, u2, v2, w2
 
 ###################################
 
@@ -237,3 +270,8 @@ def velocity_section(
     return real_val
 
 
+def interpolate_u(u,yp,y_cell_centres, kind='cubic'):
+    fu_real = interp1d(yp, np.real(u), kind)
+    fu_imag = interp1d(yp, np.imag(u), kind) 
+    u_interp = fu_real(y_cell_centres) + 1j*fu_imag(y_cell_centres)
+    return u_interp

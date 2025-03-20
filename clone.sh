@@ -22,7 +22,7 @@ echo "Copying also case generation script"
 cp ./basicCase/initializeCaseFieldBC.py $path
 
 echo "Copying also the plotting"
-cp ./basicCase/initializeCaseFieldBCplotting.py $path
+cp ./basicCase/plot.py $path
 
 echo "Copying also 0.orig"
 cp -r ./basicCase/0.orig $path

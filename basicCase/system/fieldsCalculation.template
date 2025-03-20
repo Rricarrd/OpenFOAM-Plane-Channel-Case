@@ -134,3 +134,26 @@ FoamFile
         executeInterval 1;
         writeControl    writeTime;
     }
+    
+    // Vorticity
+    vorticity
+    {
+        type            vorticity;
+        libs            ("libfieldFunctionObjects.so");
+        field           U;
+        result          Vorticity;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+    
+    // Strain rate magnitude
+    strainRate
+    {
+        type            strainRate;
+        libs            ("libfieldFunctionObjects.so");
+        field           U;
+        result          StrainRate;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+

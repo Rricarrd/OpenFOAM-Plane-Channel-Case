@@ -56,8 +56,6 @@ def parameters(dict):
 
     # Poiseuille Flow
     Ucl = dict["Ucl"]
-    para = np.transpose((4.0 * Ucl / (H * H)) * yp * (H - yp))
-    U_lam = np.reshape(np.tile(para, len(zp)), (len(yp), len(zp)))
 
     # Reynolds number of the poiseuille flow
     Re_lam = dict["Re_lam"]
@@ -74,4 +72,4 @@ def parameters(dict):
     n2d = dict["n_2D"]
     Np = dict["Np"]
 
-    return ny+1, yp, zp, U_lam, alp2d, alp3d, beta, A2d, A3d, Re_lam, n3d, n2d, Np, t, xp
+    return ny, nx, nz, yp, zp, alp2d, alp3d, beta, A2d, A3d, Re_lam, n3d, n2d, Np, t, xp, Ucl, H
