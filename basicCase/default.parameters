@@ -4,7 +4,7 @@ solver pisoFoam;
 numberOfProcessors 16;
 tStart 150;
 tEnd 200;
-dt 3e-2;
+dt 3e-3;
 writeTime 1;
 
 // Flow parameters
@@ -16,6 +16,7 @@ Ucl 1;
 model dynamicSmagorinsky;
 ce 1.048;
 ck 0.0265463553;
+cs 0.1;
 
 // Orr-Sommerfeld Initial conditions 
 alpha_2D 1.12;

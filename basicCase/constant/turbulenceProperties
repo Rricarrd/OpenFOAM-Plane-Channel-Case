@@ -23,8 +23,7 @@ LES{
         dynamicSmagorinskyCoeffs
         {
             filter        simple;
-            Ck              0.0265463553; 
-            Ce              1.048; 
+            Cs            0.1
         }
     
     

@@ -17,7 +17,7 @@ def generate(dict, path, cell_centres):
     folder_path = os.path.join(path, subdirectories)
 
     # Other
-    only_perturbations = True
+    only_perturbations = False
     
     print("Clearing directory...")
     clear_directory(folder_path)
@@ -32,7 +32,7 @@ def generate(dict, path, cell_centres):
 
     # Calculating U laminar for the grid
     if only_perturbations:
-        para = 0
+        para = y_cell_centres*0
     else:
         para = ((4.0 * Ucl / (H * H)) * y_cell_centres * (H - y_cell_centres))
 
