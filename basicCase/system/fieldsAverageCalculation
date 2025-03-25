@@ -22,7 +22,7 @@ FoamFile
         type                fieldAverage;
         libs                ("libfieldFunctionObjects.so");
         writeControl        writeTime;
-        timeStart   50; // Start calculating averages at
+        timeStart   170; // Start calculating averages at
         
         fields
         (

@@ -58,9 +58,7 @@ def parameters(dict):
     Ucl = dict["Ucl"]
 
     # Reynolds number of the poiseuille flow
-    Re_lam = dict["Re_lam"]
-    Re_cl = Re_lam * Ucl
-    Re_b = 2/3*Re_lam
+    Re_b = dict["Re_b"]
 
     # Unstable K-Type Flow (Orr Sommerfield Solution imposing alpha and beta)
     beta = dict["beta_3D"]  # beta parameter
@@ -72,4 +70,4 @@ def parameters(dict):
     n2d = dict["n_2D"]
     Np = dict["Np"]
 
-    return ny, nx, nz, yp, zp, alp2d, alp3d, beta, A2d, A3d, Re_lam, n3d, n2d, Np, t, xp, Ucl, H
+    return ny, nx, nz, yp, zp, alp2d, alp3d, beta, A2d, A3d, Re_b, n3d, n2d, Np, t, xp, Ucl, H

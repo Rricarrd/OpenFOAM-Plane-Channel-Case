@@ -42,8 +42,8 @@ vertices
 
 blocks
 (
-    hex ( 0  1  2  5  6  7  8 11) (|-nx-| |-int(ny/2)-| |-nz-|) simpleGrading (1 10 1)
-    hex ( 5  2  3  4 11  8  9 10) (|-nx-| |-int(ny/2)-| |-nz-|) simpleGrading (1 -10 1)
+    hex ( 0  1  2  5  6  7  8 11) (|-nx-| |-int(ny/2)-| |-nz-|) simpleGrading (1 |-gradient-| 1)
+    hex ( 5  2  3  4 11  8  9 10) (|-nx-| |-int(ny/2)-| |-nz-|) simpleGrading (1 |--gradient-| 1)
 );
 
 boundary

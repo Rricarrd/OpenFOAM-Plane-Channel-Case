@@ -32,20 +32,16 @@ def plot_ret(parsed_data, current_path):
     print(f"Current path: {current_path}")
 
     # Parameters
-    H2 = parsed_data["H"]/2
-    nu = 1/parsed_data["Re_lam"]
-    ret = []
-
     directories_list = get_directories(current_path)
     time = [float(i) for i in directories_list]
 
+    ret = []
+
     for i in directories_list:
 
-        try:
-            ut = calculate_ut(current_path, i)
-            ret.append(ut*H2/nu)
-        except:
-            print(f"Error calculating ut for time {i}. Skipping...")
+        ut = calculate_ut(current_path, i)
+        ret.append(ut*(parsed_data["H"]/2)/parsed_data["nu"])
+
 
 
     fig, ax = plt.subplots()
@@ -70,7 +66,7 @@ def plot_uplus_yplus(timestep, parsed_data, current_path,u_type):
     H2 = parsed_data["H"]/2
     L = parsed_data["L"]
     W = parsed_data["W"]
-    nu = 1/parsed_data["Re_lam"]
+    nu = parsed_data["nu"]
     nx = parsed_data["nx"] 
     ny = parsed_data["ny"]
     nz = parsed_data["nz"]
@@ -147,7 +143,7 @@ def plot_re_stresses(timestep, parsed_data, current_path):
     H2 = parsed_data["H"]/2
     L = parsed_data["L"]
     W = parsed_data["W"]
-    nu = 1/parsed_data["Re_lam"]
+    nu = parsed_data["nu"]
     nx = parsed_data["nx"] 
     ny = parsed_data["ny"]
     nz = parsed_data["nz"]
@@ -215,10 +211,20 @@ def get_y_values(ny,nx,current_path, time):
 
 def calculate_ut(current_path, time):
     w = Ofpp.parse_boundary_field(f'{current_path}/{time}/wallShearStress')
-    top_values = w[b"top"][b"value"]
-    bot_values = w[b"bottom"][b"value"]
-    tau = np.abs(np.average(top_values+bot_values))
+
+    mags_top = np.linalg.norm(w[b"top"][b"value"],axis=1)
+    mags_bot = np.linalg.norm(w[b"bottom"][b"value"],axis=1)
+    
+    top_value = np.average(mags_top)
+    bot_value = np.average(mags_bot)
+    
+    print(f"Top value {top_value}")
+    print(f"Bot value {bot_value}")
+    
+    tau = np.abs((top_value+bot_value)/2)
+    print(f"tau average is: {tau}")
     ut = np.sqrt(tau)
+    print(f"ut value is: {ut}")
     return ut
 
 def calculate_slice_average(U, nx, ny, nz, type="vector"):
@@ -324,7 +330,10 @@ if __name__ == "__main__":
     print(f"Plotting boundary layer for timestep {timestep}")
     plot_uplus_yplus(timestep, parsed_data, current_path,u_type="inst")
 
-    print(f"Plotting Reynolds stresses for timestep {timestep}")
-    plot_re_stresses(timestep, parsed_data, current_path)
-
+    try:
+        print(f"Plotting Reynolds stresses for timestep {timestep}")
+        plot_re_stresses(timestep, parsed_data, current_path)
+    except:
+        pass
+    
     plt.show()

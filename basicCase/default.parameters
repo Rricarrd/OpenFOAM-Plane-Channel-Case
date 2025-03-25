@@ -2,21 +2,21 @@
 case temporal;
 solver pisoFoam;
 numberOfProcessors 16;
-tStart 150;
-tEnd 200;
-dt 3e-3;
+tStart 170;
+tEnd 250;
+dt 5e-2;
 writeTime 1;
 
 // Flow parameters
-Re_lam 5000;
+Re_b 3333;
 rho 1;
 Ucl 1;
+nu 0.0002;
+
 
 // Turbulence model
 model dynamicSmagorinsky;
-ce 1.048;
-ck 0.0265463553;
-cs 0.1;
+cs 0.065;
 
 // Orr-Sommerfeld Initial conditions 
 alpha_2D 1.12;
@@ -37,7 +37,6 @@ L 5.60998688141;
 nx 32;
 ny 32;
 nz 32;
-resFactor 1.;
-graded true;
+gradient 20;
 
 

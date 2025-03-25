@@ -23,7 +23,7 @@ LES{
         dynamicSmagorinskyCoeffs
         {
             filter        simple;
-            Ce            {{ce}}
+            Cs              {{cs}};         
         }
     {% else %}
         LESModel        Smagorinsky;

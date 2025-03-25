@@ -35,8 +35,6 @@ endTime         {{tEnd}};
 
 deltaT          {{dt}};
 
-maxCo           1;
-
 writeControl    timeStep;
 
 writeInterval   {{writeTime/dt}};
@@ -51,14 +49,11 @@ timeFormat      general;
 
 timePrecision   8;
 
-runTimeModifiable true;
-
 {% if case=="temporal"%}
-runTimeModifiable true;
-adjustTimeStep  true;
+adjustTimeStep  yes;
+maxCo           0.1;
 {%else%}
-runTimeModifiable false;
-adjustTimeStep  false;
+adjustTimeStep  no;
 {% endif%}
 
 

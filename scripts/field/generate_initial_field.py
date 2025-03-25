@@ -24,8 +24,8 @@ def generate(dict, path, cell_centres):
     print("Clearing directory... Done")
 
     print("Generating parameter values from .parameters file...")
-    ny, nx, nz, yp, zp, alp2d, alp3d, beta, A2d, A3d, Re_lam, n3d, n2d, Np, t, xp, Ucl, H = parameters(dict)
-
+    ny, nx, nz, yp, zp, alp2d, alp3d, beta, A2d, A3d, Re_b, n3d, n2d, Np, t, xp, Ucl, H = parameters(dict)
+    Re_lam = 1.5*Re_b
 
     # Get y position of the cell centres from the mesh
     y_cell_centres = get_mesh_y_positions(cell_centres, nx, ny)

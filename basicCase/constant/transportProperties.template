@@ -16,10 +16,7 @@ FoamFile
 
 transportModel  Newtonian;
 
-$$ Re_b=2/3*Re_lam
-$$ Ub = 2/3*Ucl
-$$ h = H/2
-nu              |-Ub*h/Re_b-|;
+nu              |-nu-|;
 
 
 // ************************************************************************* //
