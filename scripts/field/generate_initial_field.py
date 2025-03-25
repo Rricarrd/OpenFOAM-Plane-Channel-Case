@@ -15,6 +15,9 @@ def generate(dict, path, cell_centres):
     # --- File ---
     subdirectories = "constant//fieldData"
     folder_path = os.path.join(path, subdirectories)
+
+    # Other
+    only_perturbations = True
     
     print("Clearing directory...")
     clear_directory(folder_path)
@@ -27,9 +30,12 @@ def generate(dict, path, cell_centres):
     # Get y position of the cell centres from the mesh
     y_cell_centres = get_mesh_y_positions(cell_centres, nx, ny)
 
-
     # Calculating U laminar for the grid
-    para = (4.0 * Ucl / (H * H)) * y_cell_centres * (H - y_cell_centres)
+    if only_perturbations:
+        para = 0
+    else:
+        para = ((4.0 * Ucl / (H * H)) * y_cell_centres * (H - y_cell_centres))
+
     U_lam_slice = np.reshape(np.tile(para, len(zp)), (len(yp), len(zp)))
 
     # Time evolution

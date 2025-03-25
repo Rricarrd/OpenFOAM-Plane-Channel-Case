@@ -1,7 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
+
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  v2406                                 |
+
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -10,16 +12,19 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      transportProperties;
+    object      funkySetFieldsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+expressions
+(
+    setPoiseuilleFlow
+    {
+        field U;
+        variables "Ucl=1;H=2;";
+        name U_profile;   // Custom name for this operation
+        type expression;
+        expression "(4.0*Ucl/(H*H))*pos().y*(H - pos().y) * vector(1,0,0)";
+        keepPatches 1; // Keep patches
+    }
+);
 
-transportModel  Newtonian;
-
-$$ Re_b=2/3*Re_lam
-$$ Ub = 2/3*Ucl
-$$ h = H/2
-nu              |-Ub*h/Re_b-|;
-
-
-// ************************************************************************* //

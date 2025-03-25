@@ -31,15 +31,15 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         {{tEnd}};
+endTime         200;
 
-deltaT          {{dt}};
+deltaT          0.03;
 
 maxCo           1;
 
 writeControl    timeStep;
 
-writeInterval   {{writeTime/dt}};
+writeInterval   33.333333333333336;
 
 writeFormat     binary;
 
@@ -53,13 +53,10 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-{% if case=="temporal"%}
+
 runTimeModifiable true;
 adjustTimeStep  true;
-{%else%}
-runTimeModifiable false;
-adjustTimeStep  false;
-{% endif%}
+
 
 
 

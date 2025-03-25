@@ -18,11 +18,15 @@ echo "Basic case cloned in: $path"
 pyFoamCloneCase.py ./basicCase $path
 
 
-echo "Copying also case generation script"
+echo "Copying case generation script"
 cp ./basicCase/initializeCaseFieldBC.py $path
 
-echo "Copying also the plotting"
+echo "Copying the plotting"
 cp ./basicCase/plot.py $path
+
+echo "Copying paraFoam state"
+cp ./basicCase/paraview_test_state.pvsm $path
+
 
 echo "Copying also 0.orig"
 cp -r ./basicCase/0.orig $path

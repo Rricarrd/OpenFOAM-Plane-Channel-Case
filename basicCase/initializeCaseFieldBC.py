@@ -12,7 +12,9 @@ current_path = pathlib.Path().resolve() # Get current path
 if debugging==False:
     
     parent_path = pathlib.Path().resolve().parent # Get parent path
+
     sys.path.append(str(parent_path)) # Add to python path to access scripts folder
+
 
     # Now import the scripts folder
     from scripts.field import generate_initial_field
@@ -35,7 +37,7 @@ if debugging==False:
     parsed_data = parsing.parse_foam_file(os.path.join(current_path,parameters_file_name))
 
     # Extracting current mesh cell centres
-    cell_centres=Ofpp.parse_internal_field('0/C')
+    cell_centres=Ofpp.parse_internal_field(f'{str(current_path)}/constant/C')
 
 
     # Generating the corresponding initial conditions
@@ -58,5 +60,5 @@ else:
     from scripts.common import parsing
     parameters_file_name = f"basicCase//default.parameters"
     parsed_data = parsing.parse_foam_file(os.path.join(current_path,parameters_file_name))
-    cell_centres=Ofpp.parse_internal_field('0/C')
+    cell_centres=Ofpp.parse_internal_field(f'{str(current_path)}/constant/C')
     generate_initial_field.generate(parsed_data,current_path,cell_centres)

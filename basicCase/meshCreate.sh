@@ -5,7 +5,7 @@ blockMesh
 
 checkMesh -allTopology -allGeometry -constant
 
-postProcess -func writeCellCentres
+postProcess -func writeCellCentres -constant
 
 
 

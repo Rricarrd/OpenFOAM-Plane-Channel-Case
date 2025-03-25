@@ -5,6 +5,8 @@ import os
 import matplotlib.pyplot as plt 
 import pathlib
 import re
+import argparse
+ 
 
 def get_directories(directory):
     # Regex to match valid decimal folder names (e.g., 0.99, 1.12, 3.0, etc.)
@@ -46,14 +48,16 @@ def plot_ret(parsed_data, current_path):
             print(f"Error calculating ut for time {i}. Skipping...")
 
 
-    plt.plot(ret,)
-    plt.xlabel(r'Time (s)', fontsize=12)
-    plt.ylabel(r'$Re_{\tau}$', fontsize=12)
-    plt.title(r'$Re_{\tau}$ Evolution', fontsize=14)
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
-    plt.savefig('plots/ret.png')
+    fig, ax = plt.subplots()
+    ax.plot(time,ret)
+    ax.set_xlabel(r'Time (s)', fontsize=12)
+    ax.set_ylabel(r'$Re_{\tau}$', fontsize=12)
+    ax.set_title(r'$Re_{\tau}$ Evolution', fontsize=14)
+    ax.grid(True)
+    fig.tight_layout()
+    fig.savefig('plots/ret.png')
+    
+    
 
 def plot_uplus_yplus(timestep, parsed_data, current_path,u_type):
 
@@ -100,7 +104,7 @@ def plot_uplus_yplus(timestep, parsed_data, current_path,u_type):
     average_u, average_v, average_w = calculate_slice_average(U, nx, ny, nz, type="vector")
 
     # Get y values
-    ly = get_y_values(ny,current_path, time)
+    ly = get_y_values(ny,nx,current_path, time)
     yplus = ly*ut/nu
     uplus = average_u/ut
 
@@ -113,24 +117,24 @@ def plot_uplus_yplus(timestep, parsed_data, current_path,u_type):
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
 
     # Average plot
-    axs[0].plot(average_u[0:int(ny/2)],ly[0:int(ny/2)])
+    axs[0].plot(average_u[0:int(ny/2)],ly[0:int(ny/2)],'o-')
     axs[0].set_xlabel(r'u', fontsize=12)
     axs[0].set_ylabel(r'y', fontsize=12)
     axs[0].set_title(r'u vs y', fontsize=14)
     axs[0].grid(True)
 
     # Uplus plot
-    axs[1].plot(yplus[0:int(ny/2)], uplus[0:int(ny/2)])
+    axs[1].plot(yplus[0:int(ny/2)], uplus[0:int(ny/2)],'o-')
     axs[1].set_xlabel(r'$y^{+}$', fontsize=12)
     axs[1].set_ylabel(r'$u^{+}$', fontsize=12)
     axs[1].set_title(r'$u^{+}$ vs $y^{+}$', fontsize=14)
     axs[1].set_xscale('log') 
     axs[1].grid(True)
 
-
-    plt.tight_layout()
-    plt.show()
-    plt.savefig('plots/uplus_yplus.png')
+    fig.tight_layout()
+    fig.savefig('plots/uplus_yplus.png')
+    
+    
 
 def plot_re_stresses(timestep, parsed_data, current_path):
 
@@ -160,7 +164,9 @@ def plot_re_stresses(timestep, parsed_data, current_path):
     time = directories_list[timestep]
 
     # Get y values
-    y = get_y_values(ny,current_path, time)
+    y = get_y_values(ny,nx,current_path, time)
+
+    print(f"y values: {y}")
 
     
     # Get U field
@@ -185,25 +191,27 @@ def plot_re_stresses(timestep, parsed_data, current_path):
     re_average_uv = average_uv/ut**2
 
     # Results plot
-    plt.plot(y[0:int(ny/2)], re_average_uu[0:int(ny/2)])
-    plt.plot(y[0:int(ny/2)], re_average_uv[0:int(ny/2)])
-    plt.plot(y[0:int(ny/2)], re_average_vv[0:int(ny/2)])
-    plt.plot(y[0:int(ny/2)], re_average_ww[0:int(ny/2)])
+    fig, ax = plt.subplots()
+    ax.plot(y[0:int(ny/2)], re_average_uu[0:int(ny/2)])
+    ax.plot(y[0:int(ny/2)], re_average_uv[0:int(ny/2)])
+    ax.plot(y[0:int(ny/2)], re_average_vv[0:int(ny/2)])
+    ax.plot(y[0:int(ny/2)], re_average_ww[0:int(ny/2)])
 
-    plt.xlabel(r'y', fontsize=12)
-    plt.ylabel(r'Re stresses', fontsize=12)
-    plt.title(r'Re stresses vs y', fontsize=14)
-    plt.legend([r'$Re_{uu}$', r'$Re_{uv}$', r'$Re_{vv}$', r'$Re_{ww}$'])
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+    ax.set_xlabel(r'y', fontsize=12)
+    ax.set_ylabel(r'Re stresses', fontsize=12)
+    ax.set_title(r'Re stresses vs y', fontsize=14)
+    ax.legend([r'$Re_{uu}$', r'$Re_{uv}$', r'$Re_{vv}$', r'$Re_{ww}$'])
+    ax.grid(True)
+
+    fig.savefig('plots/re_stresses.png')
     
-    plt.savefig('plots/re_stresses.png')
+    
+    
 
-def get_y_values(ny,current_path, time):
-    y = Ofpp.parse_internal_field(f'{current_path}/{time}/Cy')
-    y = y[::ny]
-    return y
+def get_y_values(ny,nx,current_path, time):
+    C = Ofpp.parse_internal_field(f'{current_path}/constant/C')
+    y_values = mesh.get_mesh_y_positions(C,nx,ny)
+    return y_values
 
 def calculate_ut(current_path, time):
     w = Ofpp.parse_boundary_field(f'{current_path}/{time}/wallShearStress')
@@ -215,22 +223,35 @@ def calculate_ut(current_path, time):
 
 def calculate_slice_average(U, nx, ny, nz, type="vector"):
 
+    ny2 = int(ny/2)
     if type == "vector":
         # Initialize arrays
         average_u = np.zeros(ny)
         average_v = np.zeros(ny)
         average_w = np.zeros(ny)
 
-        for y in range(ny):
-            xz_slice = np.array([U[x + nx * (y + nx * z)] for z in range(nz) for x in range(nx)])
+        for j in range(ny2):
+            xz_slice = np.array([U[i*(nx*ny2) + j*nz + k] for k in range(nz) for i in range(nx)])
 
             u_xz = xz_slice[:, 0]
             v_xz = xz_slice[:, 1]
             w_xz = xz_slice[:, 2]
 
-            average_u[y] = np.average(u_xz)
-            average_v[y] = np.average(v_xz)
-            average_w[y] = np.average(w_xz)
+            average_u[j] = np.average(u_xz)
+            average_v[j] = np.average(v_xz)
+            average_w[j] = np.average(w_xz)
+
+        for j in range(ny2,ny):
+            xz_slice = np.array([U[i*(nx*ny2) + j*nz + k] for k in range(nz) for i in range(nx)])
+
+            u_xz = xz_slice[:, 0]
+            v_xz = xz_slice[:, 1]
+            w_xz = xz_slice[:, 2]
+
+            average_u[j] = np.average(u_xz)
+            average_v[j] = np.average(v_xz)
+            average_w[j] = np.average(w_xz)
+
 
         return average_u, average_v, average_w
     
@@ -241,18 +262,31 @@ def calculate_slice_average(U, nx, ny, nz, type="vector"):
         average_vv = np.zeros(ny)
         average_ww = np.zeros(ny)
 
-        for y in range(ny):
-            xz_slice = np.array([U[x + nx * (y + nx * z)] for z in range(nz) for x in range(nx)])
+        for j in range(ny2):
+            xz_slice = np.array([U[i*(nx*ny2) + j*nz + k] for k in range(nz) for i in range(nx)])
 
             uu_xz = xz_slice[:, 0]
             vv_xz = xz_slice[:, 1]
             ww_xz = xz_slice[:, 2]
             uv_xz = xz_slice[:, 3]
 
-            average_uu[y] = np.average(uu_xz)
-            average_uv[y] = np.average(uv_xz)
-            average_vv[y] = np.average(vv_xz)
-            average_ww[y] = np.average(ww_xz)
+            average_uu[j] = np.average(uu_xz)
+            average_uv[j] = np.average(uv_xz)
+            average_vv[j] = np.average(vv_xz)
+            average_ww[j] = np.average(ww_xz)
+
+        for j in range(ny2,ny):
+            xz_slice = np.array([U[i*(nx*ny2) + j*nz + k] for k in range(nz) for i in range(nx)])
+
+            uu_xz = xz_slice[:, 0]
+            vv_xz = xz_slice[:, 1]
+            ww_xz = xz_slice[:, 2]
+            uv_xz = xz_slice[:, 3]
+
+            average_uu[j] = np.average(uu_xz)
+            average_uv[j] = np.average(uv_xz)
+            average_vv[j] = np.average(vv_xz)
+            average_ww[j] = np.average(ww_xz)
 
         return average_uu, average_uv, average_vv, average_ww
     
@@ -262,11 +296,23 @@ def calculate_slice_average(U, nx, ny, nz, type="vector"):
 
 if __name__ == "__main__":
 
+    # Parsing arguments
+    # Create the argument parser
+    parser = argparse.ArgumentParser(description="Process some CLI arguments.")
+
+    # Add arguments
+    parser.add_argument('--timestep', type=int, help='Desired timestep to plot. Default is t1', default=1)
+
+    # Parse arguments
+    args = parser.parse_args()
+
+    # Paths
     parent_path = pathlib.Path().resolve().parent # Get parent path
     sys.path.append(str(parent_path)) # Add to python path to access scripts folder
 
     # Now import the scripts folder
-    from scripts.common import parsing
+    from scripts.common import parsing, mesh
+
     
     current_path = os.path.dirname(os.path.realpath(__file__))
     parsed_data = parsing.parse_foam_file(f"{current_path}/default.parameters")
@@ -274,9 +320,11 @@ if __name__ == "__main__":
     print(f"Plotting friction Reynolds over time")
     plot_ret(parsed_data, current_path)
 
-    timestep = 60
+    timestep = args.timestep
     print(f"Plotting boundary layer for timestep {timestep}")
     plot_uplus_yplus(timestep, parsed_data, current_path,u_type="inst")
 
     print(f"Plotting Reynolds stresses for timestep {timestep}")
     plot_re_stresses(timestep, parsed_data, current_path)
+
+    plt.show()

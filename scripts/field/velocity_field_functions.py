@@ -24,6 +24,7 @@ def space_evolution_field(
 ):
     # --- Calculate Orr-Sommerfeld solution ---
     (
+        yp_orr,
         u2d,
         v2d,
         w2d,
@@ -44,34 +45,45 @@ def space_evolution_field(
         Re,
         n3d,
         n2d,
-        Np,
+        Np
     )
 
-    print("Example of interpolated velocity field:")
-    print(f"u2d: {u2d}")
+    # Adjusting coordinates of orr positions
+    yp_orr = yp_orr + 1
+
+    # print("Example of interpolated velocity field:")
+    # print(f"u2d before: {u2d}")
+    # plt.plot(yp_orr, np.real(u2d), label="Real")
+    # plt.plot(yp_orr, np.imag(u2d), label="Imag")
 
     # --- Interpolate velocity field to the grid ---
-    u2d = interpolate_u(u2d,yp,y_cell_centres, kind='cubic')
-    v2d = interpolate_u(v2d,yp,y_cell_centres, kind='cubic')
-    w2d = interpolate_u(w2d,yp,y_cell_centres, kind='cubic')
+    kind = 'linear'
+    u2d = interpolate_u(u2d,yp_orr,y_cell_centres, kind)
+    v2d = interpolate_u(v2d,yp_orr,y_cell_centres, kind)
+    w2d = interpolate_u(w2d,yp_orr,y_cell_centres, kind)
 
-    u3dp = interpolate_u(u3dp,yp,y_cell_centres, kind='cubic')
-    v3dp = interpolate_u(v3dp,yp,y_cell_centres, kind='cubic')
-    w3dp = interpolate_u(w3dp,yp,y_cell_centres, kind='cubic')
+    u3dp = interpolate_u(u3dp,yp_orr,y_cell_centres, kind)
+    v3dp = interpolate_u(v3dp,yp_orr,y_cell_centres, kind)
+    w3dp = interpolate_u(w3dp,yp_orr,y_cell_centres, kind)
 
-    u3dm = interpolate_u(u3dm,yp,y_cell_centres, kind='cubic')
-    v3dm = interpolate_u(v3dm,yp,y_cell_centres, kind='cubic')
-    w3dm = interpolate_u(w3dm,yp,y_cell_centres, kind='cubic')
+    u3dm = interpolate_u(u3dm,yp_orr,y_cell_centres, kind)
+    v3dm = interpolate_u(v3dm,yp_orr,y_cell_centres, kind)
+    w3dm = interpolate_u(w3dm,yp_orr,y_cell_centres, kind)
 
     
-    print(f"With interpolation u2d: {u2d}")
-
+    # print(f"With interpolation u2d: {u2d}")
+    # plt.plot(y_cell_centres, np.real(u2d), label="Real")
+    # plt.plot(y_cell_centres, np.imag(u2d), label="Imag")
+    # plt.legend(["Real pre interp", "Imag pre interp", "Real post interp", "Imag post interp"])
+    # plt.xlabel("u")
+    # plt.ylabel("y")
+    # plt.show()
 
     
     
     
     # --- Space evolution ---
-    ny2 = int(len(yp)/2)
+    ny2 = int(len(y_cell_centres)/2)
     u1_space = np.zeros((len(zp), ny2, len(xp)))
     v1_space = np.zeros((len(zp), ny2,  len(xp)))
     w1_space = np.zeros((len(zp), ny2,  len(xp)))
@@ -262,7 +274,7 @@ def velocity_section(
         complex_val = term_2d + term_3dp + term_3dm
 
         # Take the real part of the vector
-        real_val[:,j] = np.real(complex_val)
+        real_val[j,:] = np.real(complex_val)
  
     # print(real_val)
     # plt.contourf(zp, yp, real_val)

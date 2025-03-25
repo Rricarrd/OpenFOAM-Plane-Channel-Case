@@ -15,9 +15,9 @@ def solve_os_equation(
     Np,
 ):
     # --- Calculate Orr-Sommerfeld solution ---
-    lam3dp, u3dp, v3dp, w3dp = OSTemporal(N, R, alp3d, beta, n3d, Np)
-    lam3dm, u3dm, v3dm, w3dm = OSTemporal(N, R, alp3d, -beta, n3d, Np)
-    lam2d, u2d, v2d, w2d = OSTemporal(N, R, alp2d, 0, n2d, Np)
+    y3dp,lam3dp, u3dp, v3dp, w3dp = OSTemporal(N, R, alp3d, beta, n3d, Np)
+    y3dm,lam3dm, u3dm, v3dm, w3dm = OSTemporal(N, R, alp3d, -beta, n3d, Np)
+    y2d,lam2d, u2d, v2d, w2d = OSTemporal(N, R, alp2d, 0, n2d, Np)
 
     # --- Calculate frequency for the most unstable mode ---
     om2d = -lam2d[np.argmax(np.imag(lam2d))] / 1j 
@@ -39,7 +39,7 @@ def solve_os_equation(
     v2d = v2d.flatten()
     w2d = w2d.flatten()
 
-    return u2d, v2d, w2d, u3dp, v3dp, w3dp, u3dm, v3dm, w3dm, om2d, om3dp, om3dm
+    return y2d, u2d, v2d, w2d, u3dp, v3dp, w3dp, u3dm, v3dm, w3dm, om2d, om3dp, om3dm
 
 def parameters(dict):
     # --- Parameters ---

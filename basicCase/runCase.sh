@@ -7,6 +7,13 @@ else
     name="$1"
 fi
 
+# Check for all argument
+if [[ " $@ " == *" -all "* ]]; then
+    # Remove other files
+    echo "Doing some tests"
+fi
+
+
 # Clearing case
 bash ./clearCase.sh
 
@@ -29,3 +36,4 @@ postProcess -func writeCellCentres
 echo "Postprocessing and plotting"
 mkdir -p ./plots
 python ./plot.py
+mv -f *.png plots/ # Move pyFoam plots to plots and overwrite them

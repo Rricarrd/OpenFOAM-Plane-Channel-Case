@@ -2,8 +2,8 @@
 case temporal;
 solver pisoFoam;
 numberOfProcessors 16;
-tStart 0;
-tEnd 250;
+tStart 150;
+tEnd 200;
 dt 3e-2;
 writeTime 1;
 
@@ -35,7 +35,7 @@ W 2.9919930042;
 L 5.60998688141;
 nx 32;
 ny 32;
-nz 33;
+nz 32;
 resFactor 1.;
 graded true;
 
