@@ -94,10 +94,10 @@ doc/Doxygen/DTAGS
 processor[0-9]*
 
 # Ignore cell center files
-/basicCase/constant/C
-/basicCase/constant/Cx
-/basicCase/constant/Cy
-/basicCase/constant/Cz
+/basicCase/constant/fieldData/C
+/basicCase/constant/fieldData/Cx
+/basicCase/constant/fieldData/Cy
+/basicCase/constant/fieldData/Cz
 
 # Ignore PyFoam information files
 /basicCase/PyFoam*
@@ -115,6 +115,6 @@ processor[0-9]*
 /basicCase/constant/polyMesh
 
 # Ignore .png images - anywhere
-*.png
+/basicCase/plots/*.png
 
 
