@@ -20,7 +20,7 @@ solvers
     {
         solver          GAMG;
         smoother        DICGaussSeidel;
-        tolerance       1e-06;
+        tolerance       {{tolp}};
         relTol          0.001;
         nPreSweeps      0;
         nPostSweeps     2;
@@ -33,7 +33,7 @@ solvers
     pFinal
     {
         $p;
-        tolerance       1e-08;
+        tolerance       {{tolpFinal}};
         relTol          0;
     }
 
@@ -41,30 +41,39 @@ solvers
     {
         solver          PBiCG;
         preconditioner  DILU;
-        tolerance       1e-08;
+        tolerance       {{tolU}};
         relTol          0.1;
     }
 
     UFinal
     {
         $U;
-        tolerance       1e-10;
+        tolerance       {{tolUFinal}};
         relTol          0;
     }
 }
 
-
+{% if solver=="pimpleFoam" %}
   PIMPLE
   {
-      nCorrectors              5;
-      nOuterCorrectors         3;
-      nNonOrthogonalCorrectors 1;
+      nCorrectors              {{nCorrectors}};
+      nOuterCorrectors         {{nOuterCorrectors}};
+      nNonOrthogonalCorrectors {{nNonOrthogonalCorrectors}};
       pRefCell                  0;
       pRefValue                 0;
       
   }
 
+{% else %}
+  PISO
+  {
+      nCorrectors              {{nCorrectors}};
+      nNonOrthogonalCorrectors {{nNonOrthogonalCorrectors}};
+      pRefCell                  0;
+      pRefValue                 0;
+  }
 
+{% endif %}
 
 
 // ************************************************************************* //

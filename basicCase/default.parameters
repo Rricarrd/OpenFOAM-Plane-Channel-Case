@@ -1,22 +1,51 @@
 // Simulation parameters
 case temporal;
-solver pisoFoam;
 numberOfProcessors 16;
-tStart 170;
-tEnd 250;
-dt 5e-2;
-writeTime 1;
+tAveragingStart   170;
+tEnd              250;
+dt               5e-3;
+maxDeltaT        5e-2;
+writeTime           1;
+
+// Solver parameters
+solver            pimpleFoam;
+nCorrectors              5;
+nNonOrthogonalCorrectors 1;
+
+nOuterCorrectors         3;  // Only works for pimpleFoam
+limitCo                yes;  // Only works for pimpleFoam
+maxCo                  0.1;
+
+// Numerical schemes
+schemes default;        // Change between linear or cubic. If default, uses the high order values       
+
+// Numerical solvers
+tolU 1e-8;
+tolp 1e-6;
+tolUFinal 1e-10;
+tolpFinal 1e-8;
+
+
+// Turbulence model
+model dynamicSmagorinsky;
+cs 0.065;
+ck 0.02655;
+ce 1.048;
+
+// Meshing
+H 2;
+W 2.9919930042;
+L 5.60998688141;
+nx 32;
+ny 32;
+nz 32;
+gradient 10;
 
 // Flow parameters
 Re_b 3333;
 rho 1;
 Ucl 1;
 nu 0.0002;
-
-
-// Turbulence model
-model dynamicSmagorinsky;
-cs 0.065;
 
 // Orr-Sommerfeld Initial conditions 
 alpha_2D 1.12;
@@ -30,13 +59,6 @@ n_3D 2;
 Np 0;
 
 
-// Meshing
-H 2;
-W 2.9919930042;
-L 5.60998688141;
-nx 32;
-ny 32;
-nz 32;
-gradient 20;
+
 
 

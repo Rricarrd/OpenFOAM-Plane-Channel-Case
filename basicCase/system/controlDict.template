@@ -23,7 +23,7 @@ libs (
     "libsampling.so"
    );
 
-application     pisoFoam;
+application     {{solver}};
 
 startFrom       latestTime;
 
@@ -49,25 +49,33 @@ timeFormat      general;
 
 timePrecision   8;
 
-{% if case=="temporal"%}
-adjustTimeStep  yes;
-maxCo           0.1;
-{%else%}
-adjustTimeStep  no;
-{% endif%}
-
-
+{% if solver=="pimpleFoam" and limitCo=="yes"%}
+  adjustTimeStep            yes;
+  maxCo               {{maxCo}};
+  maxDeltaT       {{maxDeltaT}};
+{% endif %}
 
 functions
 {
     
-    // Calculating extra fields and some averages
-    #include "fieldsCalculation"
-    #include "fieldsAverageCalculation"
+    // Calculating extra fields and some 
+    #include "FOCf"
+    #include "FOlambda2"
+    #include "FOQ"
+    #include "FOstrainRate"
+    #include "FOwallShearStress"
+    #include "FOyPlus"
+    #include "FOReTau"
+    
+    
+    
+    
+    
+    // Calculating some averages
+    #include "FOmeanFields"
 
     // Continuous sampling functions
     // #include "samplePoints"
-    #include "pressureDiff"
      
 
      

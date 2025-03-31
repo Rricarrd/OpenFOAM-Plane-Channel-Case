@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*---------engine:jinja2-------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      functions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+    ReTau
+    {
+        type                coded;
+        libs                ("libutilityFunctionObjects.so");
+        name                ReTau;
+        timeStart           0;
+        writeControl        writeTime;
+
+        codeExecute
+        #{
+            auto* ReTauPtr =
+                mesh().getObjectPtr<volScalarField>("ReTau");
+
+            if (!ReTauPtr)
+            {
+                Info<< "Create a Re tau field" << nl;
+                ReTauPtr = new volScalarField
+                (
+                    IOobject
+                    (
+                        "ReTau",
+                        mesh().time().timeName(),
+                        mesh(),
+                        IOobject::NO_READ,
+                        IOobject::AUTO_WRITE,
+                        IOobject::REGISTER
+                    ),
+                    mesh(),
+                    dimless
+                );
+
+                regIOobject::store(ReTauPtr);
+            }
+
+            auto& ReTau = *ReTauPtr;
+
+            Info<< "Computing Re tau field\n" << endl;
+
+            const auto& tau = mesh().lookupObject<volVectorField>("wallShearStress");
+            
+            const dimensionedScalar h(dimLength, 1.0);
+            
+            const dimensionedScalar nu(sqr(dimLength)/dimTime, 0.0002);
+            
+            const dimensionedScalar Ubulk(dimVelocity, 1);
+            
+            ReTau = sqrt(mag(tau.component(0)))*h/nu;
+            
+            // Get mesh patch ids
+            label patchIDtop = mesh().boundaryMesh().findPatchID("top");
+            
+            Info << "Patch id top: " << patchIDtop << endl;
+            
+            label patchIDbottom = mesh().boundaryMesh().findPatchID("bottom");
+
+            
+            // Compute the average of ReTau
+            scalar sumReTau = (gSum(ReTau.boundaryField()[patchIDtop]) + gSum(ReTau.boundaryField()[patchIDbottom]))/2;
+            
+            Info << "sumReTau " << sumReTau << endl;
+            
+            scalar nodes = 1024;
+            
+            Info << "nodes: " << nodes << endl;
+            
+            scalar avgReTau = sumReTau / nodes;
+
+            // Print the average value to the console
+            Info << "Average ReTau: " << avgReTau << endl;
+
+        #};
+    }

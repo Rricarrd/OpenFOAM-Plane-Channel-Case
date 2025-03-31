@@ -23,13 +23,17 @@ LES{
         dynamicSmagorinskyCoeffs
         {
             filter        simple;
-            Cs              {{cs}};         
+            Cs              {{cs}};
+            Ce              {{ce}}; 
+            Ck              {{ck}}; 
         }
     {% else %}
         LESModel        Smagorinsky;
         SmagorinskyCoeffs
         {
-            Cs              {{cs}}; 
+            Cs              {{cs}};
+            Ce              {{ce}}; 
+            Ck              {{ck}};
         }
 
     {% endif %}

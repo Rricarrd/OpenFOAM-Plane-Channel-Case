@@ -113,3 +113,8 @@ processor[0-9]*
 # Ignore constant big files
 /basicCase/constant/boundaryData
 /basicCase/constant/polyMesh
+
+# Ignore .png images - anywhere
+*.png
+
+

@@ -14,7 +14,41 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+{% if schemes!="default"%}
 
+  ddtSchemes
+  {
+      default         backward;
+  }
+
+  gradSchemes
+  {
+      default         Gauss {{schemes}};
+  }
+
+  divSchemes
+  {
+      default         none;
+      div(phi,U)      Gauss {{schemes}};
+      div((nuEff*dev2(T(grad(U))))) Gauss {{schemes}};
+  }
+
+  laplacianSchemes
+  {
+      default         Gauss {{schemes}} orthogonal;
+  }
+
+  interpolationSchemes
+  {
+      default         {{schemes}};
+  }
+
+  snGradSchemes
+  {
+      default         orthogonal;
+  }
+
+{% else %}
 
   ddtSchemes
   {
@@ -48,7 +82,7 @@ FoamFile
       default         orthogonal;
   }
 
-
+{% endif %}
 
 
 // ************************************************************************* //

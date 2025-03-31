@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
 type                sets;
-libs                (sampling);
+libs                ("libsampling.so");
 interpolationScheme cellPoint;
 setFormat           raw;
 

@@ -23,7 +23,7 @@ libs (
     "libsampling.so"
    );
 
-application     pisoFoam;
+application     pimpleFoam;
 
 startFrom       latestTime;
 
@@ -33,11 +33,11 @@ stopAt          endTime;
 
 endTime         250;
 
-deltaT          0.05;
+deltaT          0.005;
 
 writeControl    timeStep;
 
-writeInterval   20.0;
+writeInterval   200.0;
 
 writeFormat     binary;
 
@@ -50,22 +50,32 @@ timeFormat      general;
 timePrecision   8;
 
 
-adjustTimeStep  yes;
-maxCo           0.1;
-
-
+  adjustTimeStep            yes;
+  maxCo               0.1;
+  maxDeltaT       0.05;
 
 
 functions
 {
     
-    // Calculating extra fields and some averages
-    #include "fieldsCalculation"
-    #include "fieldsAverageCalculation"
+    // Calculating extra fields and some 
+    #include "FOCf"
+    #include "FOlambda2"
+    #include "FOQ"
+    #include "FOstrainRate"
+    #include "FOwallShearStress"
+    #include "FOyPlus"
+    #include "FOReTau"
+    
+    
+    
+    
+    
+    // Calculating some averages
+    #include "FOmeanFields"
 
     // Continuous sampling functions
     // #include "samplePoints"
-    #include "pressureDiff"
      
 
      

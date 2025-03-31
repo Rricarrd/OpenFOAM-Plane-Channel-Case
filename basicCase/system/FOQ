@@ -1,7 +1,9 @@
-/*--------------------------------*- C++ -*----------engine:jinja2------------------------*\
+/*--------------------------------*- C++ -*---------engine:jinja2-------------------------*\
+
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  v2406                                 |
+
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -10,45 +12,22 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      functions;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-
-
-  ddtSchemes
-  {
-      default         backward;
-  }
-
-  gradSchemes
-  {
-      default         leastSquares;
-  }
-
-  divSchemes
-  {
-      default         none;
-      div(phi,U)      Gauss cubic;
-      div((nuEff*dev2(T(grad(U))))) Gauss cubic;
-  }
-
-  laplacianSchemes
-  {
-      default         Gauss cubic orthogonal;
-  }
-
-  interpolationSchemes
-  {
-      default         cubic;
-  }
-
-  snGradSchemes
-  {
-      default         orthogonal;
-  }
-
-
-
-
-// ************************************************************************* //
+// Channel wall shear stress
+    wallShearStress
+    {
+        type                wallShearStress;
+        libs                ("libfieldFunctionObjects.so");
+        log                 yes;
+        patches             ( bottom top );
+        writePrecision      10;
+        writeFields         yes;
+        writeToFile         yes;
+        executeControl      timeStep;
+        executeInterval     1;
+        writeControl        writeTime;
+        timeStart           0;
+    }

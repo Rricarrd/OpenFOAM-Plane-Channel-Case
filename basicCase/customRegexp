@@ -1,8 +1,7 @@
 // Here we tell pyFoam how to find the values that are output into the CLI. If we want others, we need to add them
-deltaP {
-        theTitle "Pressure difference";
-        expr "Expression pressureDiff on inlet:  weightedAverage=(%f%)";
+ReTau {
+        theTitle "Average ReTau";
+        expr "Average ReTau: (%f%)";
         titles (avg);
-        progress "dp: $0";
 }
 
