@@ -38,7 +38,7 @@ for folder in folders:
     print(f"Checking folder: {folder}")
     print(f"Pickled file path: {pickled_file_path}")
 
-    if folder[0].isdigit():
+    if folder[0].isdigit() and os.path.exists(pickled_file_path):
         try:
             with open(pickled_file_path, "rb") as file:
                 data = pickle.load(file)
