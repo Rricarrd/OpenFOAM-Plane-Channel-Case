@@ -1,30 +1,30 @@
+{% if dynamic_mesh!="no"%}
+
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2406                                 |
+|  \\    /   O peration     | Version:  2412                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version     2.0;
     format      ascii;
     class       dictionary;
-    object      functions;
+    location    "constant";
+    object      dynamicMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+{% endif %}
 
-// Sampling points
-     samplingUPoints
-     {
-         type                  probes;
-         libs      ("libsampling.so");
-         writeControl       timeStep;
-         writeInterval          1;       // Adjust the interval as needed
-         fields              (U);        // Field(s) you want to sample
-         probeLocations
-         (
-             (2.804993440705 1.0 1.4959965021)
-             // Add more points as needed
-         );
-     }
+
+{% if dynamic_mesh=="oscillating_domain"%}
+
+dynamicFvMesh dynamicMotionSolverFvMesh;
+
+motionSolver solidBody;
+
+solidBodyMotionFunction oscillatingLinearMotion;
+amplitude   (0 0.1 0);
+omega             2;
+{% endif %}

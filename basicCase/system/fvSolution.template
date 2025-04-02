@@ -36,6 +36,16 @@ solvers
         tolerance       {{tolpFinal}};
         relTol          0;
     }
+    
+    pcorr
+    {
+        $p;
+    }
+
+    pcorrFinal
+    {
+        $pFinal;
+    }
 
     U
     {
@@ -61,6 +71,15 @@ solvers
       nNonOrthogonalCorrectors {{nNonOrthogonalCorrectors}};
       pRefCell                  0;
       pRefValue                 0;
+
+      residualControl
+        {
+            "(U|k|epsilon|omega)"
+            {
+                relTol          0;
+                tolerance       1e-4;
+            }
+        }
       
   }
 

@@ -35,10 +35,13 @@ boundaryField
         }
     
     
-    "(bottom|top)"
-    {
-        type            noSlip;
-    }
+
+    
+        "(bottom|top)"
+        {
+            type            noSlip;
+        }
+    
 
     "(left|right)"
     {

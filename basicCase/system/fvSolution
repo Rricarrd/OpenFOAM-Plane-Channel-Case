@@ -36,6 +36,16 @@ solvers
         tolerance       1e-08;
         relTol          0;
     }
+    
+    pcorr
+    {
+        $p;
+    }
+
+    pcorrFinal
+    {
+        $pFinal;
+    }
 
     U
     {
@@ -57,10 +67,19 @@ solvers
   PIMPLE
   {
       nCorrectors              5;
-      nOuterCorrectors         3;
+      nOuterCorrectors         40;
       nNonOrthogonalCorrectors 1;
       pRefCell                  0;
       pRefValue                 0;
+
+      residualControl
+        {
+            "(U|k|epsilon|omega)"
+            {
+                relTol          0;
+                tolerance       1e-4;
+            }
+        }
       
   }
 

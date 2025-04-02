@@ -98,6 +98,10 @@ processor[0-9]*
 /basicCase/constant/fieldData/Cx
 /basicCase/constant/fieldData/Cy
 /basicCase/constant/fieldData/Cz
+/basicCase/constant/C
+/basicCase/constant/Cx
+/basicCase/constant/Cy
+/basicCase/constant/Cz
 
 # Ignore PyFoam information files
 /basicCase/PyFoam*
@@ -112,6 +116,7 @@ processor[0-9]*
 
 # Ignore constant big files
 /basicCase/constant/boundaryData
+
 /basicCase/constant/polyMesh
 
 # Ignore .png images - anywhere

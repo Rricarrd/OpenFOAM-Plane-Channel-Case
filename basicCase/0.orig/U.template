@@ -51,10 +51,18 @@ boundaryField
         }
     {% endif %}
     
-    "(bottom|top)"
-    {
-        type            noSlip;
-    }
+
+    {% if model=="oscillating"%}
+        "(bottom|top)"
+        {
+            type            movingWallVelocity;
+        }
+    {% else %}
+        "(bottom|top)"
+        {
+            type            noSlip;
+        }
+    {% endif %}
 
     "(left|right)"
     {

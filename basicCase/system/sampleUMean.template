@@ -16,8 +16,8 @@ sets
     {
         type        uniform;
         axis        distance;
-        start       (2.804993440705 0 1.4959965021);
-        end         (2.804993440705 2 1.4959965021);
+        start       (|-L/2-| 0 |-W/2-|);
+        end         (|-L/2-| |-H-| |-W/2-|);
         nPoints     200;
     }    
 }

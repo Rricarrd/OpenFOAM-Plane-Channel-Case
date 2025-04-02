@@ -20,7 +20,7 @@ _planes
     patches         ( bottom );
     surfaceType     plane;
     planeType       pointAndNormal;
-    origin          ( 0 0 1.4959965021 );
+    origin          ( 0 0 |-W/2-| );
 }
 
 sets
@@ -31,7 +31,7 @@ sets
         ${_planes}
         pointAndNormalDict
         {
-            point  ( 0 0 1.4959965021 );
+            point  ( 0 0 |-W/2-| );
             normal ( 0 1 0 );
         }
     }

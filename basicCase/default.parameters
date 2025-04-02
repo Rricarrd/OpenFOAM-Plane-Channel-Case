@@ -7,14 +7,18 @@ dt               5e-3;
 maxDeltaT        5e-2;
 writeTime           1;
 
+// Dynamic mesh
+model no;
+amplitude 0.1;
+frequency 2;
+
 // Solver parameters
 solver            pimpleFoam;
 nCorrectors              5;
 nNonOrthogonalCorrectors 1;
-
-nOuterCorrectors         3;  // Only works for pimpleFoam
+nOuterCorrectors        40;  // Only works for pimpleFoam
 limitCo                yes;  // Only works for pimpleFoam
-maxCo                  0.1;
+maxCo                  0.3;
 
 // Numerical schemes
 schemes default;        // Change between linear or cubic. If default, uses the high order values       
@@ -36,10 +40,10 @@ ce 1.048;
 H 2;
 W 2.9919930042;
 L 5.60998688141;
-nx 32;
-ny 32;
-nz 32;
-gradient 10;
+nx 16;
+ny 16;
+nz 16;
+gradient 8;
 
 // Flow parameters
 Re_b 3333;
