@@ -11,7 +11,7 @@ def get_parameters():
     current_path = pathlib.Path().resolve() # Get current path
     parent_path = pathlib.Path().resolve().parent # Get parent path
     sys.path.append(str(parent_path)) # Add to python path to access scripts folder
-
+    sys.path.append(str(parent_path.parent)) # Add to python path to access scripts folder
 
     # Now import the scripts folder
     from scripts.common import parsing

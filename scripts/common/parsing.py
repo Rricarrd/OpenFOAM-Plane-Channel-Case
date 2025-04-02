@@ -1,3 +1,22 @@
+import re
+
+def parse_variations(filename):
+    with open(filename, 'r') as file:
+        content = file.read()
+    
+    # Find all sets within `{ ... }`
+    sets = re.findall(r'\{([^}]*)\}', content, re.DOTALL)
+    
+    variations = []
+    
+    for set_content in sets:
+        # Extract key-value pairs
+        entries = re.findall(r'(\w+)\s+(\d+);', set_content)
+        # Convert to dictionary
+        variations.append({key: int(value) for key, value in entries})
+    
+    return variations
+
 def parse_foam_file(filepath):
 
     """
