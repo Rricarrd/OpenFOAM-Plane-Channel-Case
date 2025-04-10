@@ -1,7 +1,7 @@
 #!\bin\sh
 
 echo "Clearing the case using foam"
-pyFoamClearCase.py .
+pyFoamClearCase.py --keep-dynamic-code . 
 
 echo "Removing mesh and initial conditions"
 rm -r "./constant/boundaryData"

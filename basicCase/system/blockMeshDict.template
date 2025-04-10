@@ -22,6 +22,7 @@ L       |-L-|;
 H       |-H/2-|;
 W       |-W-|;
 H2       |-H-|;
+Ls       |-Ls-|;
 
 vertices
 (
@@ -38,6 +39,11 @@ vertices
     ($L $H2  $W)
     ( 0 $H2  $W)
     ( 0  $H  $W)
+
+//    ($Ls  0  0)
+//    ($Ls  0  $W)
+
+
 );
 
 blocks

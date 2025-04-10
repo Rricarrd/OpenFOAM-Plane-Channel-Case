@@ -1,28 +1,29 @@
-/*--------------------------------*- C++ -*---------engine:jinja2-------------------------*\
 
+/*--------------------------------*- C++ -*-------engine:jinja2---------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2406                                 |
-
+|  \\    /   O peration     | Version:  2412                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version     2.0;
     format      ascii;
     class       dictionary;
-    object      functions;
+    location    "constant";
+    object      dynamicMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    // Strain rate magnitude
-    strainRate
-    {
-        type            strainRate;
-        libs            ("libfieldFunctionObjects.so");
-        field           U;
-        result          StrainRate;
-        executeControl  writeTime;
-        writeControl    writeTime;
-    }
+
+
+{% if dynamicMesh=="oscillating_domain"%}
+
+dynamicFvMesh dynamicMotionSolverFvMesh;
+
+motionSolver solidBody;
+
+solidBodyMotionFunction oscillatingLinearMotion;
+amplitude   (0 |-amplitude-| 0);
+omega             |-frequency-|;
+{% endif %}

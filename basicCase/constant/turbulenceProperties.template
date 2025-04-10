@@ -27,7 +27,26 @@ LES{
             Ce              {{ce}}; 
             Ck              {{ck}}; 
         }
-    {% else %}
+        
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+        
+        vanDriestCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+            Aplus           26;
+            Cdelta          0.158;
+        }
+    {% endif %}
+        
+    {% if model=="Smagorinsky" %}
         LESModel        Smagorinsky;
         SmagorinskyCoeffs
         {
@@ -35,20 +54,59 @@ LES{
             Ce              {{ce}}; 
             Ck              {{ck}};
         }
-
-    {% endif %}
-    
-    delta           vanDriest;
-    vanDriestCoeffs
-    {
+        
         delta           cubeRootVol;
         cubeRootVolCoeffs
         {
             deltaCoeff      1;
         }
-        Aplus           26;
-        Cdelta          0.158;
-    }
+        
+        vanDriestCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+            Aplus           26;
+            Cdelta          0.158;
+        }
+    {% endif %}    
+        
+    {% if model=="WALE" %}
+        LESModel        WALE;
+        
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+    {% endif %}
+    
+    {% if model=="kEqn" %}
+        kEqn
+        {
+            delta           cubeRootVol;
+            kEqnCoeffs
+            {
+                Ce              {{ce}}; 
+                Ck              {{ck}}; 
+            }
+        }
+    {% endif %}
+        
+    {% if model=="dynamicKEqn" %}
+        dynamicKEqn
+        {
+            delta           cubeRootVol;
+            dynamicKEqnCoeffs
+            {
+                filter          simple;
+            }
+        } 
+    {% endif %}
+    
+    
 
     printCoeffs     on;
     turbulence      on;

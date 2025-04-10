@@ -59,7 +59,7 @@ functions
 {
     
     // Calculating extra fields and some 
-    #include "FOCf"
+    // #include "FOCf"
     #include "FOlambda2"
     #include "FOQ"
     //#include "FOstrainRate"
@@ -75,11 +75,6 @@ functions
     // Continuous sampling functions
     // #include "samplePoints"
      
-
-     
-
-
-
 }
 
 

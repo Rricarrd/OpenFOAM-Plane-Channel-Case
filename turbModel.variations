@@ -1,0 +1,11 @@
+sets (
+   {
+     model dynamicSmagorinsky;
+   }
+   {
+     model Smagorinsky;
+   }
+   {
+     model WALE;
+   }
+);

@@ -7,13 +7,16 @@ def parse_variations(filename):
     # Find all sets within `{ ... }`
     sets = re.findall(r'\{([^}]*)\}', content, re.DOTALL)
     
+    print(f"Found {len(sets)} sets in the file. Sets are {sets}")
+
     variations = []
     
     for set_content in sets:
         # Extract key-value pairs
-        entries = re.findall(r'(\w+)\s+(\d+);', set_content)
+        entries = re.findall(r'(\w+)\s+(\w+);', set_content)
+        
         # Convert to dictionary
-        variations.append({key: int(value) for key, value in entries})
+        variations.append({key: value for key, value in entries})
     
     return variations
 

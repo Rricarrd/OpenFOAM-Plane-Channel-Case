@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-{% if schemes!="default"%}
+{% if schemes=="linear" or schemes=="cubic"%}
 
   ddtSchemes
   {

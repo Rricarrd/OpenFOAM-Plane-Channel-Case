@@ -33,7 +33,7 @@ postProcess -func writeCellCentres
 
 
 # Plotting
-echo "Postprocessing and plotting"
-mkdir -p ./plots
-python ./plot.py
-mv -f *.png plots/ # Move pyFoam plots to plots and overwrite them
+#echo "Postprocessing and plotting"
+#mkdir -p ./plots
+#python ./plot.py
+#mv -f *.png plots/ # Move pyFoam plots to plots and overwrite them

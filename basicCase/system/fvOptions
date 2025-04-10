@@ -1,30 +1,26 @@
-{% if dynamic_mesh!="no"%}
-
-/*--------------------------------*- C++ -*----------------------------------*\
+/*--------------------------------*- C++ -*----------engine:jinja2------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2412                                  |
+|  \\    /   O peration     | Version:  v2406                                 |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
+    version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
-    object      dynamicMeshDict;
+    object      fvOptions;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-{% endif %}
 
 
-{% if dynamic_mesh=="oscillating_domain"%}
+momentumSource
+{
+    type            meanVelocityForce;
+    fields          (U);
+    selectionMode   all;       // Apply to all cells (or use "cellZone" / "cellSet")
+  
+    Ubar            (0.6666666666666666 0 0);   // Target mean velocity (e.g., 5 m/s in x-direction)
 
-dynamicFvMesh dynamicMotionSolverFvMesh;
-
-motionSolver solidBody;
-
-solidBodyMotionFunction oscillatingLinearMotion;
-amplitude   (0 |-amplitude-| 0);
-omega             |-frequency-|;
-{% endif %}
+}

@@ -10,13 +10,17 @@ parser.add_argument("--variations", type=str, default="default.variations", help
 args = parser.parse_args()
 
 variations_file_path = args.variations
+print(f"Looking for variations in file {variations_file_path}")
 
 # Parse variations file
 parsed_variations = parse_variations(variations_file_path)
 n_variations = len(parsed_variations)
 
+print(f"Checking variations {parsed_variations}")
+
 # Extract the filename without extension from the path
 variations_file_name = pathlib.Path(variations_file_path).stem + "Variations"
+
 # Count folders starting with a number
 folder_count = 0
 for item in os.listdir():
@@ -30,11 +34,16 @@ variations_file_name = str(folder_count) + "_" + variations_file_name
 if not os.path.exists(variations_file_name):
     os.makedirs(variations_file_name)
 
+print(f"Creating variations folder {variations_file_name}")
+print(f"Number of variations: {n_variations}")
+print(f"Variations parsed: {parsed_variations}")
+
 # For each variation, create a folder and copy the files
 basic_case_path = "basicCase"
 for i in range(n_variations):
+    
     # Create folder for variation
-    variation_folder_name = os.path.join(variations_file_name, str(list(parsed_variations[i].values())[0]) + "_" + str(list(parsed_variations[i].keys())[0]))
+    variation_folder_name = os.path.join(variations_file_name, str(i) + "_" + str(list(parsed_variations[i].values())[0]) + "_" + str(list(parsed_variations[i].keys())[0]))
     if not os.path.exists(variation_folder_name):
         os.makedirs(variation_folder_name)
 
@@ -81,8 +90,8 @@ except OSError as e:
     print(f"Error copying runAllCases.sh to {run_all_cases_destination_path}: {e}")
 
 # Copy scripts/common/variations to variations_file_name directory
-variations_scripts_source_path = "scripts/common/variations"
-variations_scripts_target_path = os.path.join(variations_file_name, "variations")
+variations_scripts_source_path = "scripts/variations"
+variations_scripts_target_path = variations_file_name
 
 # Check if source directory exists
 if os.path.exists(variations_scripts_source_path):
@@ -99,5 +108,7 @@ if os.path.exists(variations_scripts_source_path):
                 shutil.copy2(s, d)
             except OSError as e:
                 print(f"Error copying {s} to {d}: {e}")
+
+    
 else:
     print(f"Warning: Source directory {variations_scripts_source_path} not found.")
